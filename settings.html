@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Editar lista de lives</title>
+	<link rel="shortcut icon" href="favicon.png" type="image/png">
+	<link rel="stylesheet" href="css/materialdesignicons.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/settings.css">
+</head>
+
+<body>
+	<div class="container my-4">
+		<header class="mb-4">
+			<h2><a href="/" class="text-success"><i class="mdi mdi-home"></i></a> Editar lista de lives</h2>
+		</header>
+
+		<div class="overflow-auto">
+			<table class="table table-striped border d-table liveclasses">
+				<thead>
+					<tr>
+						<th>Reordenar</th>
+						<th>Disciplina</th>
+						<th>Assunto</th>
+						<th>Data</th>
+						<th>Link da gravação</th>
+						<th>Remover</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="6" class="loadstatus">Carregando...</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<button class="btn btn-primary add"><i class="mdi mdi-plus"></i> ADICIONAR</button>
+		<button class="btn btn-success save"><i class="mdi mdi-content-save"></i> SALVAR</button>
+
+		<div class="savestatus mt-3"></div>
+		<ul class="text-danger errors"></ul>
+
+		<h4 class="mt-4">Importar dados do arquivo</h4>
+		<label class="custom-file">
+			<input type="file" class="custom-file-input" id="importfile">
+			<span class="custom-file-label">Selecionar arquivo...</span>
+		</label>
+
+		<h4 class="mt-3">Exportar dados para arquivo</h4>
+		<button class="btn btn-secondary" id="export">EXPORTAR</button>
+		<a id="exportlink" class="d-block hidden">Clique aqui para baixar o arquivo</a>
+
+		<div class="text-primary mt-4" data-toggle="collapse" data-target="#options" style="cursor: pointer;">Opções
+		</div>
+
+		<div class="collapse pt-2" id="options">
+			<label class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input option" id="autoScrollEnd" checked>
+				<div class="custom-control-label">Rolar automaticamente para o final ao carregar página</div>
+			</label>
+
+			<label class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input option" id="addAutoScroll" checked>
+				<div class="custom-control-label">Rolar automaticamente para o início da tabela ao criar um novo
+					elemento</div>
+			</label>
+
+			<label class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input option" id="autoFocus" checked>
+				<div class="custom-control-label">Dar foco na caixa de texto Disciplina automaticamente ao criar um novo
+					elemento</div>
+			</label>
+
+			<label class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input option" id="autoAdd" checked>
+				<div class="custom-control-label">Criar um novo elemento automaticamente ao carregar a página</div>
+			</label>
+		</div>
+	</div>
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/settings.js"></script>
+</body>
+
+</html>

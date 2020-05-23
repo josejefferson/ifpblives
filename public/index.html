@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lives do IFPB</title>
+	<link rel="shortcut icon" href="favicon.png" type="image/png">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/materialdesignicons.css">
+</head>
+
+<body>
+	<div class="container my-4">
+		<header>
+			<h1><i class="mdi mdi-video text-success" id="openeditor"></i> Lives do IFPB</h1>
+			<i class="d-block mb-4">1º e 2ºs anos</i>
+		</header>
+
+		<main>
+			<div class="row">
+				<div class="col-sm-12 col-lg-8">
+					<div class="overflow-auto">
+						<table class="table table-striped border d-table liveclasses">
+							<thead style="cursor: pointer;">
+								<th class="watccol"></th>
+								<th class="disccol">Disciplina</th>
+								<th class="namecol"><div style="width: 250px;">Assunto</div></th>
+								<th class="datecol">Data</th>
+								<th class="linkcol">Link</th>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="5" class="loadstatus">Carregando...</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-sm-12 col-lg-4">
+					<div class="border rounded p-3">
+						<h3 class="mt-2 mb-4"><i class="mdi mdi-information text-primary"></i> Algumas observações:</h3>
+						<ul>
+							<li>Para agilizar o acesso a “sala de aula virtual”, os alunos devem acessar o link usando o
+								e-mail institucional
+								<mark>@academico.ifpb.edu.br</mark>, caso contrário, é necessário liberar cada acesso
+								individualmente;</li>
+							<li>As aulas serão gravadas e posteriormente compartilhadas;</li>
+							<li>Os alunos devem desabilitar microfone e câmera;</li>
+							<li>Quando surgir algum questionamento, informar no Chat para o professor, no momento
+								oportuno, liberar o microfone do
+								aluno;</li>
+							<li>A participação em tempo real dos alunos é extremamente importante para tirar dúvidas e
+								promover debates sobre o tema.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<footer class="text-secondary text-center small mt-3">
+			<a href="https://ifpb-lives.jeffersondantas.repl.co/" class="text-dark">Acessar 3º e 4ºs anos</a>
+			<div>Desenvolvido por Jefferson Dantas</div>
+		</footer>
+	</div>
+
+	<script src="js/jquery.js"></script>
+	<script src="js/index.js"></script>
+</body>
+
+</html>

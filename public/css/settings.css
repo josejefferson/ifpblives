@@ -1,0 +1,22 @@
+.liveclasses {
+	white-space: nowrap;
+	text-align: center;
+}
+
+.disc, .name, .date, .link {
+	width: 200px;
+}
+
+.name {
+	height: calc(1.5em + .75rem + 2px) !important;
+	resize: none;
+}
+
+.custom-file-label::after {
+	content: "\F0770";
+	font-family: "Material Design Icons";
+}
+
+.hidden {
+	display: none !important;
+}
