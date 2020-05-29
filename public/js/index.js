@@ -25,7 +25,7 @@ $('#openeditor').contextmenu(() => {
 // Retorna a lista de lives pelo arquivo
 function getLives() {
 	$.getJSON('https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8')
-		.done(data => { lives = data; openlives(lives); })
+		.done(data => { lives = data; openlives(lives); sortBy('reverse'); updateViewed(); })
 		.fail(err => $('.loadstatus').text(`Erro ${err.status}`).css('color', 'red'));
 }
 
@@ -42,19 +42,31 @@ function openlives(data = []) {
 	$('.liveclasses tbody').html(html);
 }
 
+function updateViewed() {
+	let viewed = JSON.parse(localStorage.getItem('viewed') || '[]');
+	lives.forEach(l => {
+		if(!viewed.includes(l.id)) { viewed.push(l.id) };
+	});
+	localStorage.setItem('viewed', JSON.stringify(viewed));
+}
+
 // Organiza a lista de lives
 function sortBy(sort, asc = true) {
-	lives.sort((a, b) => {
-		if (sort == "watc") {
-			if ($(`[data-id=${a.id}]`).prop('checked') && !$(`[data-id=${b.id}]`).prop('checked')) return asc ? 1 : -1;
-			if (!$(`[data-id=${a.id}]`).prop('checked') && $(`[data-id=${b.id}]`).prop('checked')) return asc ? -1 : 1;
-			return 0;
-		} else {
-			if (a[sort] < b[sort]) return asc ? -1 : 1;
-			if (a[sort] > b[sort]) return asc ? 1 : -1;
-			return 0;
-		}
-	});
+	if (sort != "reverse") {
+		lives.sort((a, b) => {
+			if (sort == "watc") {
+				if ($(`[data-id=${a.id}]`).prop('checked') && !$(`[data-id=${b.id}]`).prop('checked')) return asc ? 1 : -1;
+				if (!$(`[data-id=${a.id}]`).prop('checked') && $(`[data-id=${b.id}]`).prop('checked')) return asc ? -1 : 1;
+				return 0;
+			} else {
+				if (a[sort] < b[sort]) return asc ? -1 : 1;
+				if (a[sort] > b[sort]) return asc ? 1 : -1;
+				return 0;
+			}
+		});
+	} else {
+		lives.reverse();
+	}
 	openlives(lives);
 }
 
@@ -76,6 +88,8 @@ const list = (disc, name, date, link, id) => {
 			</td>
 			<td>
 				${disc || '-'}
+				${(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
+					'<span class="badge badge-info">NOVA</span>' : ''}
 			</td>
 			<td>
 				${name.replace(/\n/g, '<br>') || '-'}
