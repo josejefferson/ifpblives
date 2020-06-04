@@ -98,7 +98,7 @@ const list = (disc, name, date, link, id) => {
 			<td>
 				${disc || '-'}
 				${(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
-					'<span class="badge badge-info">NOVO</span>' : ''}
+					'<sup class="mdi mdi-circle text-danger"></sup>' : ''}
 			</td>
 			<td>
 				${name.replace(/\n/g, '<br>') || '-'}
