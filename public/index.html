@@ -12,21 +12,34 @@
 </head>
 
 <body>
-	<div class="container my-4">
-		<header>
-			<h1><i class="mdi mdi-video text-success" id="openeditor"></i> Lives do IFPB</h1>
-			<i class="d-block mb-4">1º e 2ºs anos</i>
-		</header>
+	<header class="bg-success text-white py-4">
+		<div class="container">
 
+			<h1 class="d-flex align-items-baseline"><img src="icons/svg.svg" class="mr-3" id="openeditor"
+					style="height: 29px;"> Lives do IFPB</h1>
+			<i class="d-block">1º e 2ºs anos</i>
+		</div>
+	</header>
+
+	<div class="container my-4">
 		<main>
+			<button class="btn" data-toggle="collapse" data-target="#filters"><i class="mdi mdi-filter"></i> Filtrar por disciplina</button>
+
+			<div class="collapse my-2" id="filters">
+				<select id="disc-filter" class="form-control form-inline" multiple></select>
+				<button class="btn btn-danger mt-2" id="remove-filters">Remover filtros</button>
+			</div>
+
 			<div class="row">
 				<div class="col-sm-12 col-lg-8">
 					<div class="overflow-auto">
-						<table class="table table-striped border d-table liveclasses">
-							<thead style="cursor: pointer;">
+						<table class="table table-striped table-hover border d-table liveclasses">
+							<thead class="thead-light" style="cursor: pointer;">
 								<th class="watccol"></th>
 								<th class="disccol">Disciplina</th>
-								<th class="namecol"><div style="width: 250px;">Assunto</div></th>
+								<th class="namecol">
+									<div style="width: 250px;">Assunto</div>
+								</th>
 								<th class="datecol">Data</th>
 								<th class="linkcol">Link</th>
 							</thead>
@@ -38,8 +51,43 @@
 						</table>
 					</div>
 				</div>
+
 				<div class="col-sm-12 col-lg-4">
 					<div class="border rounded p-3">
+						<h3 class="mt-2 mb-4"><i class="mdi mdi-information text-primary"></i> Horários:</h3>
+						<div class="overflow-auto text-nowrap">
+							<table class="table border d-table">
+								<thead class="thead-light">
+									<th></th>
+									<th>Segunda</th>
+									<th>Terça</th>
+									<th>Quarta</th>
+									<th>Quinta</th>
+									<th>Sexta</th>
+								</thead>
+								<tbody>
+									<tr>
+										<th>8:00 - 9:00</th>
+										<td>Geografia</td>
+										<td>Física</td>
+										<td>Ed. Física/Artes</td>
+										<td>Química</td>
+										<td>Sociologia/Filosofia</td>
+									</tr>
+									<tr>
+										<th>9:15 - 10:15</th>
+										<td>Matemática</td>
+										<td>Português</td>
+										<td>Biologia</td>
+										<td>História</td>
+										<td>Inglês/Espanhol</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="border rounded p-3 mt-3">
 						<h3 class="mt-2 mb-4"><i class="mdi mdi-information text-primary"></i> Algumas observações:</h3>
 						<ul>
 							<li>Para agilizar o acesso a “sala de aula virtual”, os alunos devem acessar o link usando o
@@ -58,14 +106,17 @@
 				</div>
 			</div>
 		</main>
-
-		<footer class="text-secondary text-center small mt-3">
-			<a href="https://ifpb-lives.jeffersondantas.repl.co/" class="text-dark">Acessar 3º e 4ºs anos</a>
-			<div>Desenvolvido por Jefferson Dantas</div>
-		</footer>
 	</div>
 
+	<footer class="text-secondary bg-light text-center small py-3">
+		<div class="container">
+			<a href="https://ifpb-lives.jeffersondantas.repl.co/" class="text-dark">Acessar 3º e 4ºs anos</a>
+			<div>Desenvolvido por Jefferson Dantas</div>
+		</div>
+	</footer>
+
 	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
 	<script src="js/index.js"></script>
 </body>
 

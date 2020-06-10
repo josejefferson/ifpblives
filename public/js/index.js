@@ -25,7 +25,7 @@ $('#openeditor').contextmenu(() => {
 // Retorna a lista de lives pelo arquivo
 function getLives() {
 	$.getJSON('https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8')
-		.done(data => { lives = data; sortBy('reverse'); updateViewed(); })
+		.done(data => { lives = data; sortBy('reverse'); updateViewed(); mountFilters(); })
 		.fail(err => $('.loadstatus').text(`Erro ${err.status}`).css('color', 'red'));
 }
 
@@ -83,8 +83,39 @@ function formatDate(date) {
 	return date.split('-').reverse().join('/');
 }
 
+function mountFilters() {
+	let disciplinas = [];
+	lives.forEach(d => {
+		disciplinas.push(d.disc);
+	});
+	disciplinas = Array.from(new Set(disciplinas));
+	disciplinas.sort((a, b) => {
+		if (a < b) return -1;
+		if (a > b) return 1;
+		return 0;
+	});
+	disciplinas.forEach(d => {
+		$('#disc-filter').append(new Option(d, d));
+	});
+}
+
+// Filtra as lives por disciplina
+$('#disc-filter').change(function () {
+	let disciplinas = $(this).val();
+	let livesFiltered = lives.filter(l => {
+		return disciplinas.includes(l.disc);
+	});
+	openlives(livesFiltered);
+});
+
+// Remove os filtros
+$('#remove-filters').click(() => {
+	$('#disc-filter option:selected').prop('selected', false);
+	openlives(lives);
+});
+
 // Retorna o HTML de um elemento da lista de lives
-const list = (disc, name, date, link, id) => {
+function list (disc, name, date, link, id) {
 	return `
 		<tr>
 			<td>
@@ -96,7 +127,7 @@ const list = (disc, name, date, link, id) => {
 				</label>
 			</td>
 			<td>
-				${disc || '-'}
+				<a href="${link || '#'}" target="_blank" class="text-dark">${disc || '-'}</a>
 				${(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
 					'<sup class="mdi mdi-circle text-danger"></sup>' : ''}
 			</td>
@@ -107,7 +138,7 @@ const list = (disc, name, date, link, id) => {
 				${formatDate(date) || '-'}
 			</td>
 			<td>
-				<a href="${link || '#'}" class="btn btn-secondary">ABRIR</button>
+				<a href="${link || '#'}" class="btn btn-sm btn-secondary">ABRIR</button>
 			</td>
 		</tr>
 	`;

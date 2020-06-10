@@ -3,10 +3,10 @@ window.onload = getLives;
 window.onbeforeunload = () => '';
 
 // Verifica as opções
-localStorage.getItem('opt-autoScrollEnd') == 'false' && $('#autoScrollEnd').prop('checked', false);
+localStorage.getItem('opt-autoScrollEnd') == 'true' && $('#autoScrollEnd').prop('checked', true);
 localStorage.getItem('opt-addAutoScroll') == 'false' && $('#addAutoScroll').prop('checked', false);
 localStorage.getItem('opt-autoFocus') == 'false' && $('#autoFocus').prop('checked', false);
-localStorage.getItem('opt-autoAdd') == 'false' && $('#autoAdd').prop('checked', false);
+localStorage.getItem('opt-autoAdd') == 'true' && $('#autoAdd').prop('checked', true);
 
 $('.option').change(function (e) {
 	localStorage.setItem(`opt-${e.target.id}`, $(this).prop('checked'));
@@ -15,7 +15,7 @@ $('.option').change(function (e) {
 // Retorna a lista de lives pelo arquivo
 function getLives() {
 	$.getJSON('https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8')
-		.done(data => { lives = data; openlives(lives); $('#autoAdd').prop('checked') && addLive() })
+		.done(data => { lives = data; openlives(lives); $('#autoAdd').prop('checked') && addLive(); mountDiscList(); })
 		.fail(err => $('.loadstatus').text(`Erro ${err.status}`).addClass('text-danger'));
 }
 
@@ -35,7 +35,7 @@ function openlives(data = []) {
 $('.add').click(addLive);
 
 function addLive() {
-	$('.liveclasses tbody').append(list());
+	$('.liveclasses tbody').append(list(0, 0, 0, 0, 0, true));
 	$('#addAutoScroll').prop('checked') && $('.liveclasses').parent().animate({ scrollLeft: 0 }, 200);
 	$('#autoFocus').prop('checked') && $('.disc:last-child').focus();
 }
@@ -43,7 +43,9 @@ function addLive() {
 // Remove um item da lista
 $('.liveclasses').on('click', '.remove', function () {
 	if (confirm("Tem certeza que deseja remover este item?")) {
-		$(this).closest('.liveclass').remove();
+		$(this).closest('.liveclass').replaceWith(`<tr class="table-danger" style="height: 2px;">
+			<td colspan="6" class="p-0 border-0" style="height: 2px;"></td>
+		</tr>`);
 	}
 });
 
@@ -165,16 +167,32 @@ function readFile(file) {
 	});
 }
 
+function mountDiscList() {
+	let disciplinas = [];
+	lives.forEach(d => {
+		disciplinas.push(d.disc);
+	});
+	disciplinas = Array.from(new Set(disciplinas));
+	disciplinas.sort((a, b) => {
+		if (a < b) return -1;
+		if (a > b) return 1;
+		return 0;
+	});
+	disciplinas.forEach(d => {
+		$('#disciplinas').append(new Option(d, d));
+	});
+}
+
 // Retorna um elemento da lista de lives
-const list = (disc, name, date, link, id) => {
+function list (disc, name, date, link, id, newItem = false) {
 	return `
-		<tr class="liveclass">
+		<tr class="liveclass${newItem ? ' table-success' : ''}">
 			<td>
 				<button class="btn btn-sm btn-info moveup"><i class="mdi mdi-arrow-up"></i></button>
 				<button class="btn btn-sm btn-info movedown"><i class="mdi mdi-arrow-down"></i></button>
 			</td>
 			<td>
-				<input type="text" class="form-control disc" placeholder="Disciplina..." value="${disc || ''}">
+				<input type="text" class="form-control disc" placeholder="Disciplina..." value="${disc || ''}" list="disciplinas">
 			</td>
 			<td>
 				<textarea class="form-control name" placeholder="Assunto...">${name || ''}</textarea>
