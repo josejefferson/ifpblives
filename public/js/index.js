@@ -44,8 +44,9 @@ $('.liveclasses').on('change', '.watched', function () {
 });
 
 // Abre o editor da lista de lives
-$('#openeditor').contextmenu(() => {
-	$('#openeditor').click(() => {
+$('#openeditor').contextmenu(function () {
+	$(this).off('contextmenu');
+	$(this).click(() => {
 		window.open(`/settings?class=${schclass}`)
 	});
 	return false;
