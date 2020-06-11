@@ -1,3 +1,21 @@
+let localhost = false;
+
+let schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
+let dbURL;
+
+if (schclass == '1e2') {
+	// Turma dos 1ºs e 2ºs anos
+	dbURL = 'https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8';
+	$('.home').attr('href', '/?class=1e2');
+	$('.class').text('1º e 2ºs anos');
+
+} else {
+	// Turma dos 3ºs e 4ºs anos
+	dbURL = 'https://jsonstorage.net/api/items/ce9f44a2-cddb-44a7-873a-f9ccca6d0ea7';
+	$('.home').attr('href', '/?class=3e4');
+	$('.class').text('3º e 4ºs anos');
+}
+
 let lives;
 window.onload = getLives;
 window.onbeforeunload = () => '';
@@ -14,7 +32,7 @@ $('.option').change(function (e) {
 
 // Retorna a lista de lives pelo arquivo
 function getLives() {
-	$.getJSON('https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8')
+	$.getJSON(localhost ? `data/lives${schclass}.json` : dbURL)
 		.done(data => { lives = data; openlives(lives); $('#autoAdd').prop('checked') && addLive(); mountDiscList(); })
 		.fail(err => $('.loadstatus').text(`Erro ${err.status}`).addClass('text-danger'));
 }
@@ -104,7 +122,7 @@ function save() {
 
 // Salva a lista no arquivo
 function writeFile(data) {
-	$.post("write", { lives: data })
+	$.post('write', { class: schclass, lives: data })
 		.done(resp => {
 			$('.errors').html('');
 			resp.length && showErrors(resp);
@@ -134,7 +152,7 @@ $('#importfile').change(async function () {
 $('#export').click(() => {
 	$('#exportlink').attr({
 		href: `data:text/plain,${encodeURIComponent(JSON.stringify(toArray()))}`,
-		download: `ifpblives-${Date.now()}.json`
+		download: `ifpblives-${schclass}-${Date.now()}.json`
 	}).removeClass('hidden');
 });
 
@@ -210,7 +228,7 @@ function mountDiscList() {
 }
 
 // Retorna um elemento da lista de lives
-function list (disc, name, date, link, attachments, id, newItem = false) {
+function list(disc, name, date, link, attachments, id, newItem = false) {
 	return `
 		<tr class="liveclass${newItem ? ' table-success' : ''}">
 			<td>
@@ -240,7 +258,7 @@ function list (disc, name, date, link, attachments, id, newItem = false) {
 	`;
 }
 
-function attachment (name, url) {
+function attachment(name, url) {
 	return `
 		<div class="attachment d-flex mb-1">
 			<input type="text" class="form-control d-inline-flex mr-1 attachname" placeholder="Nome" value="${name || ''}">

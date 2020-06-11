@@ -1,3 +1,25 @@
+let localhost = false;
+
+let schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
+let dbURL;
+
+if (schclass == '1e2') {
+	// Turma dos 1ºs e 2ºs anos
+	dbURL = 'https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8';
+	$('.class').text('1º e 2ºs anos');
+	$('.switchclass').text('Acessar 3º e 4ºs anos').attr('href', '/?class=3e4');
+	$('.switchclasslink').attr('href', '/?class=3e4');
+	$('.hor3e4').remove();
+
+} else {
+	// Turma dos 3ºs e 4ºs anos
+	dbURL = 'https://jsonstorage.net/api/items/ce9f44a2-cddb-44a7-873a-f9ccca6d0ea7';
+	$('.class').text('3º e 4ºs anos');
+	$('.switchclass').text('Acessar 1º e 2ºs anos').attr('href', '/?class=1e2');
+	$('.switchclasslink').attr('href', '/?class=1e2');
+	$('.hor1e2').remove();
+}
+
 let lives;
 window.onload = getLives;
 
@@ -17,14 +39,14 @@ $('.liveclasses').on('change', '.watched', function () {
 // Abre o editor da lista de lives
 $('#openeditor').contextmenu(() => {
 	$('#openeditor').click(() => {
-		window.open('/settings')
+		window.open(`/settings?class=${schclass}`)
 	});
 	return false;
 });
 
 // Retorna a lista de lives pelo arquivo
 function getLives() {
-	$.getJSON('https://jsonstorage.net/api/items/38ceee94-8f71-4399-ab9a-4f51043baab8')
+	$.getJSON(localhost ? `data/lives${schclass}.json` : dbURL)
 		.done(data => { lives = data; sortBy('reverse'); updateViewed(); mountFilters(); })
 		.fail(err => $('.loadstatus').text(`Erro ${err.status}`).css('color', 'red'));
 }
@@ -49,7 +71,7 @@ function openlives(data = []) {
 function updateViewed() {
 	let viewed = JSON.parse(localStorage.getItem('viewed') || '[]');
 	lives.forEach(l => {
-		if(!viewed.includes(l.id)) { viewed.push(l.id) };
+		if (!viewed.includes(l.id)) { viewed.push(l.id) };
 	});
 	localStorage.setItem('viewed', JSON.stringify(viewed));
 }
@@ -119,7 +141,7 @@ $('#remove-filters').click(() => {
 });
 
 // Retorna o HTML de um elemento da lista de lives
-function list (disc, name, date, link, attachments, id) {
+function list(disc, name, date, link, attachments, id) {
 	return `
 		<tr>
 			<td>
@@ -133,7 +155,7 @@ function list (disc, name, date, link, attachments, id) {
 			<td>
 				<a href="${link || '#'}" target="_blank" class="text-dark">${disc || '-'}</a>
 				${(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
-					'<sup class="mdi mdi-circle text-danger"></sup>' : ''}
+			'<sup class="mdi mdi-circle text-danger"></sup>' : ''}
 			</td>
 			<td>
 				${name.replace(/\n/g, '<br>') || '-'}
