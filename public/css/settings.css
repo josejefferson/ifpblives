@@ -7,6 +7,14 @@
 	width: 200px;
 }
 
+.attachname {
+	width: 100px;
+}
+
+.attachurl {
+	width: 200px;
+}
+
 .name {
 	height: calc(1.5em + .75rem + 2px) !important;
 	resize: none;

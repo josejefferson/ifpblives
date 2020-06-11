@@ -34,7 +34,11 @@ function openlives(data = []) {
 	let html = '';
 	if (data.length) {
 		data.forEach(l => {
-			html += list(l.disc, l.name, l.date, l.link, l.id);
+			let attachments = '';
+			l.attachments.forEach(a => {
+				attachments += attachment(a.name, a.url);
+			});
+			html += list(l.disc, l.name, l.date, l.link, attachments, l.id);
 		});
 	} else {
 		html = '<tr><td colspan="5">Nenhuma live registrada</td></tr>';
@@ -115,7 +119,7 @@ $('#remove-filters').click(() => {
 });
 
 // Retorna o HTML de um elemento da lista de lives
-function list (disc, name, date, link, id) {
+function list (disc, name, date, link, attachments, id) {
 	return `
 		<tr>
 			<td>
@@ -140,6 +144,15 @@ function list (disc, name, date, link, id) {
 			<td>
 				<a href="${link || '#'}" class="btn btn-sm btn-secondary">ABRIR</button>
 			</td>
+			<td>
+				${attachments || '-'}
+			</td>
 		</tr>
+	`;
+}
+
+function attachment(name, url) {
+	return `
+		<a href="${url || '#'}" class="d-block">${name || '(Sem nome)'}</a>
 	`;
 }

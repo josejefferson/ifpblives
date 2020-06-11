@@ -23,7 +23,11 @@ function getLives() {
 function openlives(data = []) {
 	let html = '';
 	data.forEach(l => {
-		html += list(l.disc, l.name, l.date, l.link, l.id);
+		let attachments = '';
+		l.attachments.forEach(a => {
+			attachments += attachment(a.name, a.url);
+		});
+		html += list(l.disc, l.name, l.date, l.link, attachments, l.id);
 	});
 	$('.liveclasses tbody').html(html);
 	if ($('#autoScrollEnd').prop('checked')) $('html, body').animate({
@@ -35,7 +39,7 @@ function openlives(data = []) {
 $('.add').click(addLive);
 
 function addLive() {
-	$('.liveclasses tbody').append(list(0, 0, 0, 0, 0, true));
+	$('.liveclasses tbody').append(list(0, 0, 0, 0, 0, 0, true));
 	$('#addAutoScroll').prop('checked') && $('.liveclasses').parent().animate({ scrollLeft: 0 }, 200);
 	$('#autoFocus').prop('checked') && $('.disc:last-child').focus();
 }
@@ -47,6 +51,16 @@ $('.liveclasses').on('click', '.remove', function () {
 			<td colspan="6" class="p-0 border-0" style="height: 2px;"></td>
 		</tr>`);
 	}
+});
+
+// Adiciona anexos
+$('.liveclasses').on('click', '.addattach', function () {
+	$(this).before(attachment());
+});
+
+// Remove anexos
+$('.liveclasses').on('click', '.attachdelete', function () {
+	$(this).closest('.attachment').remove();
 });
 
 // Move um item da lista para cima
@@ -71,6 +85,7 @@ function toArray() {
 		el.date = $(this).find('.date').val();
 		el.disc = $(this).find('.disc').val();
 		el.link = $(this).find('.link').val();
+		el.attachments = readAttachs(this);
 		el.id = $(this).find('.id').val();
 		data.push(el);
 	});
@@ -167,6 +182,17 @@ function readFile(file) {
 	});
 }
 
+function readAttachs(el) {
+	let attachments = [];
+	$(el).find('.attachment').each(function () {
+		attach = {};
+		attach.name = $(this).find('.attachname').val();
+		attach.url = $(this).find('.attachurl').val();
+		attachments.push(attach);
+	});
+	return attachments;
+}
+
 function mountDiscList() {
 	let disciplinas = [];
 	lives.forEach(d => {
@@ -184,7 +210,7 @@ function mountDiscList() {
 }
 
 // Retorna um elemento da lista de lives
-function list (disc, name, date, link, id, newItem = false) {
+function list (disc, name, date, link, attachments, id, newItem = false) {
 	return `
 		<tr class="liveclass${newItem ? ' table-success' : ''}">
 			<td>
@@ -204,9 +230,22 @@ function list (disc, name, date, link, id, newItem = false) {
 				<input type="url" class="form-control link" placeholder="Link..." value="${link || ''}">
 			</td>
 			<td>
+				${attachments || ''}
+				<button class="btn addattach"><i class="mdi mdi-plus"></i> Adicionar anexo</button>
+			<td>
 				<button class="btn btn-danger remove"><i class="mdi mdi-delete"></i></button>
 			</td>
 			<input type="hidden" class="id" value="${id || randomID()}">
 		</tr>
+	`;
+}
+
+function attachment (name, url) {
+	return `
+		<div class="attachment d-flex mb-1">
+			<input type="text" class="form-control d-inline-flex mr-1 attachname" placeholder="Nome" value="${name || ''}">
+			<input type="url" class="form-control d-inline-flex mr-1 attachurl" placeholder="Link" value="${url || ''}">
+			<button class="btn btn-warning attachdelete"><i class="mdi mdi-delete"></i></button>
+		</div>
 	`;
 }
