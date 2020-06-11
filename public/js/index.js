@@ -24,11 +24,18 @@ let lives;
 window.onload = getLives;
 
 // Botões de organização
-$('.liveclasses thead').contextmenu(() => false);
-$('.watccol').click(() => sortBy('watc')).contextmenu(() => sortBy('watc', false));
-$('.namecol').click(() => sortBy('name')).contextmenu(() => sortBy('name', false));
-$('.disccol').click(() => sortBy('disc')).contextmenu(() => sortBy('disc', false));
-$('.datecol').click(() => sortBy('date')).contextmenu(() => sortBy('date', false));
+$('#watccol, #disccol, #datecol').click(function (e) {
+	let asc = true;
+	if ($(e.target).hasClass('sort')) asc = false;
+	$('#watccol, #namecol, #disccol, #datecol').removeClass('sort sortrev');
+	asc ? $(`#${e.target.id}`).addClass('sort') : $(`#${e.target.id}`).addClass('sortrev');
+	
+	switch (e.target.id) {
+		case 'watccol': sortBy('watc', asc);  break;
+		case 'disccol': sortBy('disc', asc); break;
+		case 'datecol': sortBy('date', asc); break;
+	}
+});
 
 // Salva os IDs das lives assistidas
 $('.liveclasses').on('change', '.watched', function () {
