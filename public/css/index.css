@@ -1,0 +1,15 @@
+.iflogo {
+	height: 29px;
+}
+
+.liveclasses thead {
+	cursor: pointer;
+}
+
+.liveclasses .namecol div {
+	width: 250px;
+}
+
+.liveclasses td:nth-child(6) {
+	white-space: nowrap;
+}
