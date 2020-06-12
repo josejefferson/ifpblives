@@ -29,9 +29,9 @@ $('#watccol, #disccol, #datecol').click(function (e) {
 	if ($(e.target).hasClass('sort')) asc = false;
 	$('#watccol, #namecol, #disccol, #datecol').removeClass('sort sortrev');
 	asc ? $(`#${e.target.id}`).addClass('sort') : $(`#${e.target.id}`).addClass('sortrev');
-	
+
 	switch (e.target.id) {
-		case 'watccol': sortBy('watc', asc);  break;
+		case 'watccol': sortBy('watc', asc); break;
 		case 'disccol': sortBy('disc', asc); break;
 		case 'datecol': sortBy('date', asc); break;
 	}

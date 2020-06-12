@@ -2,7 +2,7 @@
 	height: 29px;
 }
 
-.liveclasses thead {
+#watccol, #disccol, #datecol {
 	cursor: pointer;
 }
 
