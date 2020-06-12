@@ -25,6 +25,7 @@ window.onload = getLives;
 
 // Botões de organização
 $('#watccol, #disccol, #datecol').click(function (e) {
+	removeFilters();
 	let asc = true;
 	if ($(e.target).hasClass('sort')) asc = false;
 	$('#watccol, #namecol, #disccol, #datecol').removeClass('sort sortrev');
@@ -47,7 +48,7 @@ $('.liveclasses').on('change', '.watched', function () {
 $('#openeditor').contextmenu(function () {
 	$(this).off('contextmenu');
 	$(this).click(() => {
-		window.open(`/settings?class=${schclass}`)
+		window.open(`/settings?class=${schclass}`);
 	});
 	return false;
 });
@@ -135,6 +136,7 @@ function mountFilters() {
 
 // Filtra as lives por disciplina
 $('#disc-filter').change(function () {
+	sortBy('disc');
 	let disciplinas = $(this).val();
 	let livesFiltered = lives.filter(l => {
 		return disciplinas.includes(l.disc);
@@ -143,10 +145,12 @@ $('#disc-filter').change(function () {
 });
 
 // Remove os filtros
-$('#remove-filters').click(() => {
+$('#remove-filters').click(removeFilters);
+
+function removeFilters() {
 	$('#disc-filter option:selected').prop('selected', false);
 	openlives(lives);
-});
+}
 
 // Retorna o HTML de um elemento da lista de lives
 function list(disc, name, date, link, attachments, id) {
