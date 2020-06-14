@@ -65,15 +65,15 @@ function addLive() {
 // Remove um item da lista
 $('.liveclasses').on('click', '.remove', function () {
 	if (confirm("Tem certeza que deseja remover este item?")) {
-		$(this).closest('.liveclass').replaceWith(`<tr class="table-danger" style="height: 2px;">
-			<td colspan="6" class="p-0 border-0" style="height: 2px;"></td>
+		$(this).closest('.liveclass').replaceWith(`<tr class="table-danger removeditem" style="height: 2px;">
+			<td colspan="7" class="p-0 border-0" style="height: 2px;"></td>
 		</tr>`);
 	}
 });
 
 // Adiciona anexos
 $('.liveclasses').on('click', '.addattach', function () {
-	$(this).before(attachment());
+	$(this).before(attachment(0, 0, true));
 });
 
 // Remove anexos
@@ -122,13 +122,21 @@ function save() {
 
 // Salva a lista no arquivo
 function writeFile(data) {
-	$.post('write', { class: schclass, lives: data })
+	let sendNotification = ($('#notify').prop('checked') && $('.newitem').length || $('.newattach').length) ? true : false;
+	$.post('write', {
+		class: schclass,
+		lives: data,
+		sendNotification: sendNotification,
+		additions: sendNotification ? getAdditions() : {}
+	})
 		.done(resp => {
 			$('.errors').html('');
 			resp.length && showErrors(resp);
 			resp.length ?
 				$('.savestatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger') :
 				$('.savestatus').text('Salvo').removeClass('text-success text-warning text-danger').addClass('text-success');
+			$('.newitem, .newattach').removeClass('table-success newitem newattach');
+			$('.removeditem').remove();
 		}).fail(err => {
 			console.log(err);
 			$('.savestatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger');
@@ -230,7 +238,7 @@ function mountDiscList() {
 // Retorna um elemento da lista de lives
 function list(disc, name, date, link, attachments, id, newItem = false) {
 	return `
-		<tr class="liveclass${newItem ? ' table-success' : ''}">
+		<tr class="liveclass${newItem ? ' table-success newitem' : ''}">
 			<td>
 				<button class="btn btn-sm btn-info moveup"><i class="mdi mdi-arrow-up"></i></button>
 				<button class="btn btn-sm btn-info movedown"><i class="mdi mdi-arrow-down"></i></button>
@@ -258,12 +266,37 @@ function list(disc, name, date, link, attachments, id, newItem = false) {
 	`;
 }
 
-function attachment(name, url) {
+function attachment(name, url, newItem = false) {
 	return `
-		<div class="attachment d-flex mb-1">
+		<div class="attachment d-flex mb-1${newItem ? ' newattach' : ''}">
 			<input type="text" class="form-control d-inline-flex mr-1 attachname" placeholder="Nome" value="${name || ''}">
 			<input type="url" class="form-control d-inline-flex mr-1 attachurl" placeholder="Link" value="${url || ''}">
 			<button class="btn btn-warning attachdelete"><i class="mdi mdi-delete"></i></button>
 		</div>
 	`;
+}
+
+function getAdditions() {
+	let livesAdd = [];
+	let attachAdd = [];
+
+	$('.newitem').each(function () {
+		let live = {};
+		live.disc = $(this).find('.disc').val();
+		live.date = $(this).find('.date').val();
+		livesAdd.push(live);
+	});
+
+	$('.newattach').each(function () {
+		let attach = {};
+		attach.name = $(this).find('.attachname').val();
+		attach.disc = $(this).closest('.liveclass').find('.disc').val();
+		attach.date = $(this).closest('.liveclass').find('.date').val();
+		attachAdd.push(attach);
+	});
+
+	return {
+		livesAdd: livesAdd,
+		attachAdd: attachAdd
+	}
 }

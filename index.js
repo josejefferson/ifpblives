@@ -1,4 +1,4 @@
-var localhost = false;
+var localhost = true;
 
 var express = require('express')
 var app = express()
@@ -7,6 +7,9 @@ var md5 = require('md5')
 var path = require('path')
 var fs = require('fs')
 var fetch = require('node-fetch')
+var OneSignal = require('onesignal-node');
+var client = new OneSignal.Client('18b1561d-b987-451d-8838-ec933c470647',
+	'YWQ3ZTM0YTYtYTI0Ni00NmMwLWE3OTUtMTA0ZjJmODU2NzYx')
 
 const users = {
 	"jefferson": "689eb857b6c9b6b7798af468a7d501cb",
@@ -31,6 +34,37 @@ app.post('/write', (req, res) => {
 		if (schclass == '3e4') dbURL = 'https://jsonstorage.net/api/items/ce9f44a2-cddb-44a7-873a-f9ccca6d0ea7';
 
 		if (data) {
+			if (req.body.sendNotification) {
+				if (req.body.additions &&
+					(req.body.additions.livesAdd && req.body.additions.livesAdd.length) ||
+					(req.body.additions.attachAdd && req.body.additions.attachAdd.length)
+				) {
+					let notificationText = '🌟 Novas coisas foram adicionadas ao site:\n\n'
+					notificationText += `🏫 Turma: ${schclass == '1e2' ? '1º e 2ºs anos' : '3º e 4ºs anos'}`
+
+					// Lives adicionadas
+					if (req.body.additions.livesAdd && req.body.additions.livesAdd.length) {
+						notificationText += '‣ Lives adicionadas:\n'
+						req.body.additions.livesAdd.forEach(l => {
+							notificationText += `• ${l.disc || '-'} (${formatDate(l.date) || '-'})\n`
+						})
+						notificationText += '\n'
+					}
+
+					// Anexos adicionados
+					if (req.body.additions.attachAdd && req.body.additions.attachAdd.length) {
+						notificationText += '‣ Anexos adicionados:\n'
+						req.body.additions.attachAdd.forEach(a => {
+							notificationText += `• ${a.name || '-'} (${a.disc || '-'} - ${formatDate(a.date) || '-'})\n`
+						})
+						notificationText += '\n'
+					}
+					
+					// Notificar
+					notify(notificationText.trim(), `class${schclass}`)
+				}
+			}
+
 			if (localhost) {
 				fs.writeFile(`public/data/lives${schclass}.json`, data, err => {
 					if (err) return res.send(["Ocorreu um erro desconhecido ao salvar o arquivo"])
@@ -79,4 +113,24 @@ function authenticate(req, res) {
 		<h1>Atualize a página e digite seu Login e Senha</h1>
 		<i>Para ter acesso permanente a esta página, peça autorização ao administrador</i>`)
 	return false
+}
+
+function formatDate(date) {
+	return date.split('-').reverse().join('/');
+}
+
+function notify(text, segment) {
+	const notification = {
+		contents: {
+			'en': text || 'Teste'
+		},
+		included_segments: segment ? [segment] : ['Subscribed Users'],
+		template_id: '379352f0-69ae-4b4d-b9c3-eaa90108ca76'
+	}
+
+	try {
+		client.createNotification(notification)
+	} catch {
+		console.log('Notificação não enviada');
+	}
 }
