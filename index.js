@@ -34,7 +34,7 @@ app.post('/write', (req, res) => {
 		if (schclass == '3e4') dbURL = 'https://jsonstorage.net/api/items/ce9f44a2-cddb-44a7-873a-f9ccca6d0ea7';
 
 		if (data) {
-			if (req.body.sendNotification == true) {
+			if (req.body.sendNotification == "true") {
 				if (req.body.additions &&
 					(req.body.additions.livesAdd && req.body.additions.livesAdd.length) ||
 					(req.body.additions.attachAdd && req.body.additions.attachAdd.length)

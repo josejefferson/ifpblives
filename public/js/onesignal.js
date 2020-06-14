@@ -54,19 +54,23 @@ function updateButton() {
 			// Caso bloqueie as notificações
 			$('#notifications-container').collapse('hide');
 		} else {
-			$('#notifications-container').collapse('show');
-
 			getSubscriptionState().then(state => {
 				OneSignal.getTags().then(tags => {
-					$('#notifications').prop('disabled', false);
+					let notificationsEnabled = (state.isPushEnabled || !state.isOptedOut) &&
+						(tags && tags[`class${schclass}`] == "true") ? true : false;
+					let buttonText = notificationsEnabled ?
+						'<i class="mdi mdi-bell-off"></i> Desative as notificações' :
+						'<i class="mdi mdi-bell"></i> Ative as notificações';
 
-					let buttonText = (state.isPushEnabled || !state.isOptedOut) && (tags && tags[`class${schclass}`] == "true") ?
-						"Desative as notificações" : "Ative as notificações";
-					
 					// Atualiza o botão
 					$('#notifications').off('click', buttonClick);
 					$('#notifications').on('click', buttonClick);
-					$('#notifications').text(buttonText);
+					$('#notifications').html(buttonText);
+					$('#notifications').removeClass('btn-success btn-danger');
+					$('#notifications').addClass(notificationsEnabled ? 'btn-danger' : 'btn-success');
+
+					$('#notifications').prop('disabled', false);
+					$('#notifications-container').collapse('show');
 				});
 			});
 		}
