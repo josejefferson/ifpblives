@@ -52,6 +52,15 @@
 		<div class="savestatus mt-3"></div>
 		<ul class="text-danger errors"></ul>
 
+		<h4 class="mt-4">Enviar notificação</h4>
+		<textarea class="form-control mb-1" id="notification-text" placeholder="Texto da notificação..."></textarea>
+		<i class="d-block">A notificação será enviada para <span class="class">-º e -ºs anos</span>. Apenas quem ativou
+			as notificações receberá</i>
+		<button class="btn btn-warning sendnotify"><i class="mdi mdi-send"></i> ENVIAR</button>
+
+		<div class="notifystatus mt-3"></div>
+		<ul class="text-danger notifyerrors"></ul>
+
 		<h4 class="mt-4">Importar dados do arquivo</h4>
 		<label class="custom-file">
 			<input type="file" class="custom-file-input" id="importfile">
@@ -86,6 +95,11 @@
 			<label class="custom-control custom-checkbox">
 				<input type="checkbox" class="custom-control-input option" id="autoAdd">
 				<div class="custom-control-label">Criar um novo elemento automaticamente ao carregar a página</div>
+			</label>
+
+			<label class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input option" id="autoNotify" checked>
+				<div class="custom-control-label">Por padrão notifica sempre que algo novo é adicionado</div>
 			</label>
 		</div>
 	</div>

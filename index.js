@@ -39,27 +39,27 @@ app.post('/write', (req, res) => {
 					(req.body.additions.livesAdd && req.body.additions.livesAdd.length) ||
 					(req.body.additions.attachAdd && req.body.additions.attachAdd.length)
 				) {
-					let notificationText = '🌟 Novas coisas foram adicionadas ao site:\n\n'
-					notificationText += `🏫 Turma: ${schclass == '1e2' ? '1º e 2ºs anos' : '3º e 4ºs anos'}`
+					let notificationText = '🌟 Novos itens foram adicionadas ao site:\n';
+					notificationText += `🏫 Turma: ${schclass == '1e2' ? '1º e 2ºs anos' : '3º e 4ºs anos'}\n\n`
 
 					// Lives adicionadas
 					if (req.body.additions.livesAdd && req.body.additions.livesAdd.length) {
-						notificationText += '‣ Lives adicionadas:\n'
+						// notificationText += '‣ Lives adicionadas:\n'
 						req.body.additions.livesAdd.forEach(l => {
-							notificationText += `• ${l.disc || '-'} (${formatDate(l.date) || '-'})\n`
+							notificationText += `🔴 ${l.disc} (${formatDate(l.date)})\n`
 						})
 						notificationText += '\n'
 					}
 
 					// Anexos adicionados
 					if (req.body.additions.attachAdd && req.body.additions.attachAdd.length) {
-						notificationText += '‣ Anexos adicionados:\n'
+						// notificationText += '‣ Anexos adicionados:\n'
 						req.body.additions.attachAdd.forEach(a => {
-							notificationText += `• ${a.name || '-'} (${a.disc || '-'} - ${formatDate(a.date) || '-'})\n`
+							notificationText += `📎 ${a.name} (${a.disc} - ${formatDate(a.date)})\n`
 						})
 						notificationText += '\n'
 					}
-					
+
 					// Notificar
 					notify(notificationText.trim(), `class${schclass}`)
 				}
@@ -95,6 +95,20 @@ app.post('/write', (req, res) => {
 	}
 })
 
+app.post('/notify', (req, res) => {
+	if (authenticate(req, res)) {
+		let text = req.body.text
+		let schclass = req.body.class == '3e4' ? '3e4' : '1e2'
+
+		if (text) {
+			notify(text, `class${schclass}`, true)
+			res.send([])
+		} else {
+			res.send(['Texto vazio'])
+		}
+	}
+})
+
 app.listen(3000, () => {
 	console.log('>> Aberto na porta 3000')
 })
@@ -119,12 +133,13 @@ function formatDate(date) {
 	return date.split('-').reverse().join('/');
 }
 
-function notify(text, segment) {
+function notify(text, segment, separate = false) {
 	const notification = {
 		contents: {
 			'en': text || 'Teste'
 		},
 		included_segments: segment ? [segment] : ['Subscribed Users'],
+		web_push_topic: separate ? Math.floor(Math.random() * 9999999).toString() : segment,
 		template_id: '379352f0-69ae-4b4d-b9c3-eaa90108ca76'
 	}
 

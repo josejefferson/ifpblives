@@ -25,6 +25,7 @@ localStorage.getItem('opt-autoScrollEnd') == 'true' && $('#autoScrollEnd').prop(
 localStorage.getItem('opt-addAutoScroll') == 'false' && $('#addAutoScroll').prop('checked', false);
 localStorage.getItem('opt-autoFocus') == 'false' && $('#autoFocus').prop('checked', false);
 localStorage.getItem('opt-autoAdd') == 'true' && $('#autoAdd').prop('checked', true);
+localStorage.getItem('opt-autoNotify') == 'false' && $('#autoNotify, #notify').prop('checked', false);
 
 $('.option').change(function (e) {
 	localStorage.setItem(`opt-${e.target.id}`, $(this).prop('checked'));
@@ -94,6 +95,8 @@ $('.liveclasses').on('click', '.movedown', function () {
 // Salva a lista no arquivo
 $('.save').click(save);
 
+$('.sendnotify').click(sendNotification);
+
 // Converte a lista de lives do DOM para um Array
 function toArray() {
 	let data = [];
@@ -145,6 +148,29 @@ function writeFile(data) {
 		});
 }
 
+// Envia uma notificação aos alunos
+function sendNotification() {
+	$('.notifyerrors').html('');
+	$('.notifystatus').text('Enviando...').removeClass('text-success text-warning text-danger').addClass('text-warning');
+	$.post('notify', {
+		class: schclass,
+		text: $('#notification-text').val()
+	})
+		.done(resp => {
+			$('.notifyerrors').html('');
+			resp.length && showNotifyErrors(resp);
+			resp.length ?
+				$('.notifystatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger') :
+				$('.notifystatus').text('Enviada').removeClass('text-success text-warning text-danger').addClass('text-success');
+			$('#notification-text').val('');
+		}).fail(err => {
+			console.log(err);
+			$('.notifystatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger');
+			if (err.status == 401) { showNotifyErrors(["Erro de autorização"]); return }
+			showNotifyErrors(err.responseJSON);
+		});
+}
+
 // Importa a lista de lives do arquivo
 $('#importfile').change(async function () {
 	try {
@@ -163,6 +189,32 @@ $('#export').click(() => {
 		download: `ifpblives-${schclass}-${Date.now()}.json`
 	}).removeClass('hidden');
 });
+
+// Retorna os elementos adicionados
+function getAdditions() {
+	let livesAdd = [];
+	let attachAdd = [];
+
+	$('.newitem').each(function () {
+		let live = {};
+		live.disc = $(this).find('.disc').val();
+		live.date = $(this).find('.date').val();
+		livesAdd.push(live);
+	});
+
+	$('.newattach').each(function () {
+		let attach = {};
+		attach.name = $(this).find('.attachname').val();
+		attach.disc = $(this).closest('.liveclass').find('.disc').val();
+		attach.date = $(this).closest('.liveclass').find('.date').val();
+		attachAdd.push(attach);
+	});
+
+	return {
+		livesAdd: livesAdd,
+		attachAdd: attachAdd
+	}
+}
 
 // Formata a data
 function formatDate(date) {
@@ -194,6 +246,14 @@ function showErrors(errors = []) {
 	$('.errors').html('');
 	errors.forEach(err => {
 		$('.errors').append(`<li><b>Erro:</b> ${err}</li>`);
+	});
+}
+
+// Exibe erros de notificação
+function showNotifyErrors(errors = []) {
+	$('.notifyerrors').html('');
+	errors.forEach(err => {
+		$('.notifyerrors').append(`<li><b>Erro:</b> ${err}</li>`);
 	});
 }
 
@@ -274,29 +334,4 @@ function attachment(name, url, newItem = false) {
 			<button class="btn btn-warning attachdelete"><i class="mdi mdi-delete"></i></button>
 		</div>
 	`;
-}
-
-function getAdditions() {
-	let livesAdd = [];
-	let attachAdd = [];
-
-	$('.newitem').each(function () {
-		let live = {};
-		live.disc = $(this).find('.disc').val();
-		live.date = $(this).find('.date').val();
-		livesAdd.push(live);
-	});
-
-	$('.newattach').each(function () {
-		let attach = {};
-		attach.name = $(this).find('.attachname').val();
-		attach.disc = $(this).closest('.liveclass').find('.disc').val();
-		attach.date = $(this).closest('.liveclass').find('.date').val();
-		attachAdd.push(attach);
-	});
-
-	return {
-		livesAdd: livesAdd,
-		attachAdd: attachAdd
-	}
 }
