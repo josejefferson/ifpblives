@@ -1,4 +1,4 @@
-var localhost = true;
+var localhost = false;
 
 var express = require('express')
 var app = express()
@@ -39,12 +39,11 @@ app.post('/write', (req, res) => {
 					(req.body.additions.livesAdd && req.body.additions.livesAdd.length) ||
 					(req.body.additions.attachAdd && req.body.additions.attachAdd.length)
 				) {
-					let notificationText = '🌟 Novos itens foram adicionadas ao site:\n';
+					let notificationText = '🌟 Novos itens foram adicionados ao site:\n';
 					notificationText += `🏫 Turma: ${schclass == '1e2' ? '1º e 2ºs anos' : '3º e 4ºs anos'}\n\n`
 
 					// Lives adicionadas
 					if (req.body.additions.livesAdd && req.body.additions.livesAdd.length) {
-						// notificationText += '‣ Lives adicionadas:\n'
 						req.body.additions.livesAdd.forEach(l => {
 							notificationText += `🔴 ${l.disc} (${formatDate(l.date)})\n`
 						})
@@ -53,7 +52,6 @@ app.post('/write', (req, res) => {
 
 					// Anexos adicionados
 					if (req.body.additions.attachAdd && req.body.additions.attachAdd.length) {
-						// notificationText += '‣ Anexos adicionados:\n'
 						req.body.additions.attachAdd.forEach(a => {
 							notificationText += `📎 ${a.name} (${a.disc} - ${formatDate(a.date)})\n`
 						})
@@ -69,7 +67,7 @@ app.post('/write', (req, res) => {
 				fs.writeFile(`public/data/lives${schclass}.json`, data, err => {
 					if (err) return res.send(["Ocorreu um erro desconhecido ao salvar o arquivo"])
 
-					fs.writeFile(`public/data/backups/bkp-${schclass}-${Date.now()}.json`, data, err => {
+					fs.writeFile(`public/data/backups/bkp-${schclass}-${date().cDate}.json`, data, err => {
 						if (err) return res.send(["Ocorreu um erro desconhecido ao salvar o arquivo"])
 						res.send([])
 					})
@@ -98,10 +96,11 @@ app.post('/write', (req, res) => {
 app.post('/notify', (req, res) => {
 	if (authenticate(req, res)) {
 		let text = req.body.text
+		let link = req.body.link || 0;
 		let schclass = req.body.class == '3e4' ? '3e4' : '1e2'
 
 		if (text) {
-			notify(text, `class${schclass}`, true)
+			notify(text, `class${schclass}`, link, true)
 			res.send([])
 		} else {
 			res.send(['Texto vazio'])
@@ -133,11 +132,36 @@ function formatDate(date) {
 	return date.split('-').reverse().join('/');
 }
 
-function notify(text, segment, separate = false) {
+function date() {
+	let date = new Date();
+	let parts = {
+		y: date.getFullYear(),
+		m: date.getMonth() + 1,
+		d: date.getDate(),
+		h: date.getHours(),
+		mi: date.getMinutes(),
+		s: date.getSeconds()
+	}
+
+	let y = parts.y.toString();
+	let m = parts.m > 10 ? parts.m.toString() : '0' + parts.m;
+	let d = parts.d > 10 ? parts.d.toString() : '0' + parts.d;
+	let h = parts.h > 10 ? parts.h.toString() : '0' + parts.h;
+	let mi = parts.mi > 10 ? parts.mi.toString() : '0' + parts.mi;
+	let s = parts.s > 10 ? parts.s.toString() : '0' + parts.s;
+
+	let cDate = [y, m, d, h, mi, s].join('-');
+
+	return { y, m, d, h, mi, s, cDate };
+}
+
+function notify(text, segment, link, separate = false) {
 	const notification = {
+		...(separate && { headings: { 'en': 'Lives do IFPB (✉️ Mensagem)' } }),
 		contents: {
 			'en': text || 'Teste'
 		},
+		...(link && { url: link }),
 		included_segments: segment ? [segment] : ['Subscribed Users'],
 		web_push_topic: separate ? Math.floor(Math.random() * 9999999).toString() : segment,
 		template_id: '379352f0-69ae-4b4d-b9c3-eaa90108ca76'

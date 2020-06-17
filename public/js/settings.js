@@ -154,7 +154,8 @@ function sendNotification() {
 	$('.notifystatus').text('Enviando...').removeClass('text-success text-warning text-danger').addClass('text-warning');
 	$.post('notify', {
 		class: schclass,
-		text: $('#notification-text').val()
+		text: $('#notification-text').val(),
+		link: $('#notification-link').val()
 	})
 		.done(resp => {
 			$('.notifyerrors').html('');
@@ -162,7 +163,7 @@ function sendNotification() {
 			resp.length ?
 				$('.notifystatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger') :
 				$('.notifystatus').text('Enviada').removeClass('text-success text-warning text-danger').addClass('text-success');
-			$('#notification-text').val('');
+			$('#notification-text, #notification-link').val('');
 		}).fail(err => {
 			console.log(err);
 			$('.notifystatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger');
@@ -186,7 +187,7 @@ $('#importfile').change(async function () {
 $('#export').click(() => {
 	$('#exportlink').attr({
 		href: `data:text/plain,${encodeURIComponent(JSON.stringify(toArray()))}`,
-		download: `ifpblives-${schclass}-${Date.now()}.json`
+		download: `ifpblives-${schclass}-${date().cDate}.json`
 	}).removeClass('hidden');
 });
 
@@ -227,6 +228,30 @@ function formatDate(date) {
 	if (day.length < 2) day = '0' + day;
 
 	return [year, month, day].join('-');
+}
+
+// Separa as partes que formam a data
+function date() {
+	let date = new Date();
+	let parts = {
+		y: date.getFullYear(),
+		m: date.getMonth() + 1,
+		d: date.getDate(),
+		h: date.getHours(),
+		mi: date.getMinutes(),
+		s: date.getSeconds()
+	}
+
+	let y = parts.y.toString();
+	let m = parts.m > 10 ? parts.m.toString() : '0' + parts.m;
+	let d = parts.d > 10 ? parts.d.toString() : '0' + parts.d;
+	let h = parts.h > 10 ? parts.h.toString() : '0' + parts.h;
+	let mi = parts.mi > 10 ? parts.mi.toString() : '0' + parts.mi;
+	let s = parts.s > 10 ? parts.s.toString() : '0' + parts.s;
+
+	let cDate = [y, m, d, h, mi, s].join('-');
+
+	return { y, m, d, h, mi, s, cDate };
 }
 
 // Gera um ID aleatório

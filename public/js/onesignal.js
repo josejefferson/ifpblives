@@ -5,7 +5,7 @@ OneSignal.push(function () {
 		notifyButton: {
 			enable: false
 		},
-		welcomeNotification: { // Desativa notificação de boas vindas
+		welcomeNotification: {
 			disable: true
 		}
 	});
@@ -65,9 +65,9 @@ function updateButton() {
 					// Atualiza o botão
 					$('#notifications').off('click', buttonClick);
 					$('#notifications').on('click', buttonClick);
-					$('#notifications').html(buttonText);
 					$('#notifications').removeClass('btn-success btn-danger');
 					$('#notifications').addClass(notificationsEnabled ? 'btn-danger' : 'btn-success');
+					$('#notifications').html(buttonText);
 
 					$('#notifications').prop('disabled', false);
 					$('#notifications-container').collapse('show');
