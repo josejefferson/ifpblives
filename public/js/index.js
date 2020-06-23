@@ -176,7 +176,7 @@ function list(disc, name, date, link, attachments, id) {
 				${formatDate(date) || '-'}
 			</td>
 			<td>
-				<a href="${link || '#'}" class="btn btn-sm btn-secondary">ABRIR</button>
+				<a href="${link || '#'}" target="_blank" class="btn btn-sm btn-secondary">ABRIR</button>
 			</td>
 			<td>
 				${attachments || '-'}
@@ -187,6 +187,6 @@ function list(disc, name, date, link, attachments, id) {
 
 function attachment(name, url) {
 	return `
-		<a href="${url || '#'}" class="d-block">${name || '(Sem nome)'}</a>
+		<a href="${url || '#'}" target="_blank" class="d-block">${name || '(Sem nome)'}</a>
 	`;
 }

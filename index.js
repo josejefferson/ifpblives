@@ -115,8 +115,7 @@ app.listen(3000, () => {
 function authenticate(req, res) {
 	let b64auth = (req.headers.authorization || '').split(' ')[1] || ''
 	let auth = Buffer.from(b64auth, 'base64').toString().split(':')
-	let login = auth[0]
-	let password = auth[1]
+	let [login, password] = auth;
 
 	if (login && password && md5(password) == users[login]) return true
 
