@@ -1,6 +1,6 @@
-let localhost = false;
+const localhost = false;
 
-let schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
+const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;
 
 if (schclass == '1e2') {
@@ -40,7 +40,7 @@ $('#watccol, #disccol, #datecol').click(function (e) {
 
 // Salva os IDs das lives assistidas
 $('.liveclasses').on('change', '.watched', function () {
-	let id = $(this).data('id');
+	const id = $(this).data('id');
 	localStorage.setItem(`live-${id}`, $(this).prop('checked'));
 });
 
@@ -137,8 +137,8 @@ function mountFilters() {
 // Filtra as lives por disciplina
 $('#disc-filter').change(function () {
 	sortBy('disc');
-	let disciplinas = $(this).val();
-	let livesFiltered = lives.filter(l => {
+	const disciplinas = $(this).val();
+	const livesFiltered = lives.filter(l => {
 		return disciplinas.includes(l.disc);
 	});
 	openlives(livesFiltered);

@@ -1,6 +1,6 @@
-let localhost = false;
+const localhost = false;
 
-let schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
+const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;
 
 if (schclass == '1e2') {
@@ -101,14 +101,14 @@ $('.sendnotify').click(sendNotification);
 function toArray() {
 	let data = [];
 	$('.liveclass').each(function () {
-		let el = {};
-		el.name = $(this).find('.name').val();
-		el.date = $(this).find('.date').val();
-		el.disc = $(this).find('.disc').val();
-		el.link = $(this).find('.link').val();
-		el.attachments = readAttachs(this);
-		el.id = $(this).find('.id').val();
-		data.push(el);
+		data.push({
+			name: $(this).find('.name').val(),
+			date: $(this).find('.date').val(),
+			disc: $(this).find('.disc').val(),
+			link: $(this).find('.link').val(),
+			attachments: readAttachs(this),
+			id: $(this).find('.id').val()
+		});
 	});
 	return data;
 }
@@ -116,7 +116,7 @@ function toArray() {
 // Salva a lista de lives
 function save() {
 	if (confirm("Tem certeza que deseja salvar?")) {
-		let data = toArray();
+		const data = toArray();
 		$('.errors').html('');
 		$('.savestatus').text('Salvando...').removeClass('text-success text-warning text-danger').addClass('text-warning');
 		writeFile(JSON.stringify(data));
@@ -125,7 +125,8 @@ function save() {
 
 // Salva a lista no arquivo
 function writeFile(data) {
-	let sendNotification = ($('#notify').prop('checked') && $('.newitem').length || $('.newattach').length) ? true : false;
+	const sendNotification = ($('#notify').prop('checked') &&
+		($('.newitem').length || $('.newattach').length)) ? true : false;
 	$.post('write', {
 		class: schclass,
 		lives: data,
@@ -175,8 +176,8 @@ function sendNotification() {
 // Importa a lista de lives do arquivo
 $('#importfile').change(async function () {
 	try {
-		let file = $(this)[0].files[0];
-		let data = await readFile(file);
+		const file = $(this)[0].files[0];
+		const data = await readFile(file);
 		lives = JSON.parse(data);
 		if (confirm("Tem certeza que deseja importar do arquivo?")) openlives(lives);
 		$(this).val('');
@@ -187,7 +188,7 @@ $('#importfile').change(async function () {
 $('#export').click(() => {
 	$('#exportlink').attr({
 		href: `data:text/plain,${encodeURIComponent(JSON.stringify(toArray()))}`,
-		download: `ifpblives-${schclass}-${date().cDate}.json`
+		download: `ifpblives-${schclass}-${fDate()}.json`
 	}).removeClass('hidden');
 });
 
@@ -197,66 +198,52 @@ function getAdditions() {
 	let attachAdd = [];
 
 	$('.newitem').each(function () {
-		let live = {};
-		live.disc = $(this).find('.disc').val();
-		live.date = $(this).find('.date').val();
-		livesAdd.push(live);
+		livesAdd.push({
+			disc: $(this).find('.disc').val(),
+			date: $(this).find('.date').val()
+		});
 	});
 
 	$('.newattach').each(function () {
-		let attach = {};
-		attach.name = $(this).find('.attachname').val();
-		attach.disc = $(this).closest('.liveclass').find('.disc').val();
-		attach.date = $(this).closest('.liveclass').find('.date').val();
-		attachAdd.push(attach);
+		attachAdd.push({
+			name: $(this).find('.attachname').val(),
+			disc: $(this).closest('.liveclass').find('.disc').val(),
+			date: $(this).closest('.liveclass').find('.date').val(),
+		});
 	});
 
-	return {
-		livesAdd: livesAdd,
-		attachAdd: attachAdd
-	}
+	return { livesAdd, attachAdd }
 }
 
 // Formata a data
 function formatDate(date) {
-	let dt = new Date(date);
+	const dt = new Date(date);
 	let month = (dt.getMonth() + 1).toString();
 	let day = dt.getDate().toString();
 	let year = dt.getFullYear().toString();
 
-	if (month.length < 2) month = '0' + month;
-	if (day.length < 2) day = '0' + day;
+	if (month.length < 2) month = `0${month}`;
+	if (day.length < 2) day = `0${day}`;
 
 	return [year, month, day].join('-');
 }
 
 // Separa as partes que formam a data
-function date() {
-	let date = new Date();
-	let parts = {
-		y: date.getFullYear(),
-		m: date.getMonth() + 1,
-		d: date.getDate(),
-		h: date.getHours(),
-		mi: date.getMinutes(),
-		s: date.getSeconds()
-	}
+function fDateUnit(unit) { return String(unit).length === 1 ? `0${unit}` : unit; }
+function fDate(date = new Date()) {
+	const year = date.getFullYear();
+	const month = fDateUnit(date.getMonth() + 1);
+	const monthDay = fDateUnit(date.getDate());
+	const hours = fDateUnit(date.getHours());
+	const minutes = fDateUnit(date.getMinutes());
+	const seconds = fDateUnit(date.getSeconds());
 
-	let y = parts.y.toString();
-	let m = parts.m > 10 ? parts.m.toString() : '0' + parts.m;
-	let d = parts.d > 10 ? parts.d.toString() : '0' + parts.d;
-	let h = parts.h > 10 ? parts.h.toString() : '0' + parts.h;
-	let mi = parts.mi > 10 ? parts.mi.toString() : '0' + parts.mi;
-	let s = parts.s > 10 ? parts.s.toString() : '0' + parts.s;
-
-	let cDate = [y, m, d, h, mi, s].join('-');
-
-	return { y, m, d, h, mi, s, cDate };
+	return `${year}-${month}-${monthDay}_${hours}-${minutes}-${seconds}`;
 }
 
 // Gera um ID aleatório
 function randomID() {
-	let chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+	const chars = '0123456789abcdefghijklmnopqrstuvwxyz';
 	let string = '';
 
 	for (let i = 0; i < 8; i++) {
