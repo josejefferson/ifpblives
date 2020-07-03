@@ -84,12 +84,12 @@ $('.liveclasses').on('click', '.attachdelete', function () {
 
 // Move um item da lista para cima
 $('.liveclasses').on('click', '.moveup', function () {
-	$(this).closest('.liveclass').insertBefore($(this).closest('.liveclass').prev());
+	$(this).closest('.liveclass').addClass('table-warning').insertBefore($(this).closest('.liveclass').prev());
 });
 
 // Move um item da lista para baixo
 $('.liveclasses').on('click', '.movedown', function () {
-	$(this).closest('.liveclass').insertAfter($(this).closest('.liveclass').next());
+	$(this).closest('.liveclass').addClass('table-warning').insertAfter($(this).closest('.liveclass').next());
 });
 
 // Salva a lista no arquivo
