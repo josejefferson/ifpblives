@@ -33,8 +33,15 @@ $('.option').change(function (e) {
 
 // Retorna a lista de lives pelo arquivo
 function getLives() {
+	$('.add, .save').prop('disabled', true);
 	$.getJSON(localhost ? `data/lives${schclass}.json` : dbURL)
-		.done(data => { lives = data; openlives(lives); $('#autoAdd').prop('checked') && addLive(); mountDiscList(); })
+		.done(data => {
+			lives = data;
+			openlives(lives);
+			$('#autoAdd').prop('checked') && addLive();
+			mountDiscList();
+			$('.add, .save').prop('disabled', false);
+		})
 		.fail(err => $('.loadstatus').text(`Erro ${err.status}`).addClass('text-danger'));
 }
 
