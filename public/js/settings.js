@@ -139,7 +139,7 @@ function writeFile(data) {
 			resp.length ?
 				$('.savestatus').text('Falha').removeClass('text-success text-warning text-danger').addClass('text-danger') :
 				$('.savestatus').text('Salvo').removeClass('text-success text-warning text-danger').addClass('text-success');
-			$('.newitem, .newattach').removeClass('table-success newitem newattach');
+			$('.newitem, .newattach, .table-warning').removeClass('table-success table-warning newitem newattach');
 			$('.removeditem').remove();
 		}).fail(err => {
 			console.log(err);
