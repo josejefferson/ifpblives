@@ -35,7 +35,7 @@ function save(data, schclass, res) {
 	})
 }
 
-function saveOnline(data, dbURL, res) {
+function saveOnline(data, dbURL, schclass, res) {
 	fetch(dbURL, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json' },

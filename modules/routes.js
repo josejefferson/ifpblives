@@ -26,7 +26,7 @@ routes.post('/write', (req, res) => {
 				actions.save(data, schclass, res);
 			} else {
 				// Salva online
-				actions.saveOnline(data, dbURL, res)
+				actions.saveOnline(data, dbURL, schclass, res)
 			}
 		} else {
 			res.send(["Dados não especificados"])
