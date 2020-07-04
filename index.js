@@ -5,6 +5,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
 const routes = require('./modules/routes')
+const { dateH } = require('./modules/functions')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -15,5 +16,5 @@ app.use((req, res) => {
 })
 
 app.listen(3000, () => {
-	console.log('>> Aberto na porta 3000')
+	console.log(`>> [${dateH()}] Aberto na porta 3000`)
 })
