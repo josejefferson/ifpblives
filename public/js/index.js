@@ -100,9 +100,9 @@ function sortBy(sort, asc = true) {
 			break;
 		case 'watc':
 			lives.sort((a, b) => {
-				if ($(`[data-id=${a.id}]`).prop('checked') && !$(`[data-id=${b.id}]`).prop('checked'))
+				if (localStorage.getItem(`live-${a.id}`) == "true" && !(localStorage.getItem(`live-${b.id}`) == "true"))
 					return asc ? 1 : -1;
-				if (!$(`[data-id=${a.id}]`).prop('checked') && $(`[data-id=${b.id}]`).prop('checked'))
+				if (!(localStorage.getItem(`live-${a.id}`) == "true") && localStorage.getItem(`live-${b.id}`) == "true")
 					return asc ? -1 : 1;
 				return 0;
 			});

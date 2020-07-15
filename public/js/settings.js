@@ -48,14 +48,20 @@ function getLives() {
 // Renderiza a lista de lives
 function openlives(data = []) {
 	let html = '';
-	data.forEach(l => {
-		let attachments = '';
-		l.attachments.forEach(a => {
-			attachments += attachment(a.name, a.url);
+	if (data.length) {
+		data.forEach(l => {
+			let attachments = '';
+			l.attachments.forEach(a => {
+				attachments += attachment(a.name, a.url);
+			});
+			html += list(l.disc, l.name, l.date, l.link, attachments, l.id);
 		});
-		html += list(l.disc, l.name, l.date, l.link, attachments, l.id);
-	});
+	} else {
+		html += '<tr><td colspan="7">Nenhuma live registrada</td></tr>'
+	}
+
 	$('.liveclasses tbody').html(html);
+	
 	if ($('#autoScrollEnd').prop('checked')) $('html, body').animate({
 		scrollTop: $('.liveclasses tbody tr:last-child').offset().top
 	}, 500);
@@ -67,7 +73,7 @@ $('.add').click(addLive);
 function addLive() {
 	$('.liveclasses tbody').append(list(0, 0, 0, 0, 0, 0, true));
 	$('#addAutoScroll').prop('checked') && $('.liveclasses').parent().animate({ scrollLeft: 0 }, 200);
-	$('#autoFocus').prop('checked') && $('.disc:last-child').focus();
+	$('#autoFocus').prop('checked') && $('.liveclasses tbody .liveclass:last-child .disc').focus();
 }
 
 // Remove um item da lista
