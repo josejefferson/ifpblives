@@ -1,4 +1,4 @@
-const localhost = false;
+const localhost = true;
 
 const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;
@@ -28,7 +28,7 @@ $('#watccol, #disccol, #datecol').click(function (e) {
 	removeFilters();
 	let asc = true;
 	if ($(e.target).hasClass('sort')) asc = false;
-	$('#watccol, #namecol, #disccol, #datecol').removeClass('sort sortrev');
+	$('#watccol, #subjcol, #disccol, #datecol').removeClass('sort sortrev');
 	asc ? $(`#${e.target.id}`).addClass('sort') : $(`#${e.target.id}`).addClass('sortrev');
 
 	switch (e.target.id) {
@@ -69,7 +69,7 @@ function openlives(data = []) {
 			l.attachments.forEach(a => {
 				attachments += attachment(a.name, a.url);
 			});
-			html += list(l.disc, l.name, l.date, l.link, attachments, l.id);
+			html += list(l.disc, l.subject, l.date, l.link, attachments, l.id);
 		});
 	} else {
 		html = '<tr><td colspan="5">Nenhuma live registrada</td></tr>';
@@ -86,10 +86,10 @@ function updateViewed() {
 }
 
 // Organiza a lista de lives
-// watc, name, disc, date, reverse
+// watc, subject, disc, date, reverse
 function sortBy(sort, asc = true) {
 	switch (sort) {
-		case 'name':
+		case 'subject':
 		case 'disc':
 		case 'date':
 			lives.sort((a, b) => {
@@ -153,7 +153,7 @@ function removeFilters() {
 }
 
 // Retorna o HTML de um elemento da lista de lives
-function list(disc, name, date, link, attachments, id) {
+function list(disc, subject, date, link, attachments, id) {
 	return `
 		<tr>
 			<td>
@@ -170,7 +170,7 @@ function list(disc, name, date, link, attachments, id) {
 			'<sup class="mdi mdi-circle text-danger"></sup>' : ''}
 			</td>
 			<td>
-				${name.replace(/\n/g, '<br>') || '-'}
+				${subject.replace(/\n/g, '<br>') || '-'}
 			</td>
 			<td>
 				${formatDate(date) || '-'}

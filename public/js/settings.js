@@ -1,4 +1,4 @@
-const localhost = false;
+const localhost = true;
 
 const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;
@@ -54,7 +54,7 @@ function openlives(data = []) {
 			l.attachments.forEach(a => {
 				attachments += attachment(a.name, a.url);
 			});
-			html += list(l.disc, l.name, l.date, l.link, attachments, l.id);
+			html += list(l.disc, l.subject, l.date, l.link, attachments, l.id);
 		});
 	} else {
 		html += '<tr><td colspan="7">Nenhuma live registrada</td></tr>'
@@ -115,9 +115,9 @@ function toArray() {
 	let data = [];
 	$('.liveclass').each(function () {
 		data.push({
-			name: $(this).find('.name').val(),
-			date: $(this).find('.date').val(),
 			disc: $(this).find('.disc').val(),
+			subject: $(this).find('.subject').val(),
+			date: $(this).find('.date').val(),
 			link: $(this).find('.link').val(),
 			attachments: readAttachs(this),
 			id: $(this).find('.id').val()
@@ -321,7 +321,7 @@ function mountDiscList() {
 }
 
 // Retorna um elemento da lista de lives
-function list(disc, name, date, link, attachments, id, newItem = false) {
+function list(disc, subject, date, link, attachments, id, newItem = false) {
 	return `
 		<tr class="liveclass${newItem ? ' table-success newitem' : ''}">
 			<td>
@@ -332,7 +332,7 @@ function list(disc, name, date, link, attachments, id, newItem = false) {
 				<input type="text" class="form-control disc" placeholder="Disciplina..." value="${disc || ''}" list="disciplinas">
 			</td>
 			<td>
-				<textarea class="form-control name" placeholder="Assunto...">${name || ''}</textarea>
+				<textarea class="form-control subject" placeholder="Assunto...">${subject || ''}</textarea>
 			</td>
 			<td>
 				<input type="date" class="form-control date" value="${date || formatDate(Date.now())}">
