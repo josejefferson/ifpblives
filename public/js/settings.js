@@ -228,19 +228,6 @@ function getAdditions() {
 	return { livesAdd, attachAdd }
 }
 
-// Separa as partes que formam a data
-function fDateUnit(unit) { return String(unit).length === 1 ? `0${unit}` : unit; }
-function fDate(date = new Date()) {
-	const year = date.getFullYear();
-	const month = fDateUnit(date.getMonth() + 1);
-	const monthDay = fDateUnit(date.getDate());
-	const hours = fDateUnit(date.getHours());
-	const minutes = fDateUnit(date.getMinutes());
-	const seconds = fDateUnit(date.getSeconds());
-
-	return `${year}-${month}-${monthDay}_${hours}-${minutes}-${seconds}`;
-}
-
 // Gera um ID aleatório
 function randomID() {
 	const chars = '0123456789abcdefghijklmnopqrstuvwxyz';

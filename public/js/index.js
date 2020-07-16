@@ -114,10 +114,6 @@ function sortBy(sort, asc = true) {
 	openlives(lives);
 }
 
-function formatDate(date) {
-	return date.split('-').reverse().join('/');
-}
-
 function mountFilters() {
 	let disciplinas = [];
 	lives.forEach(d => {
