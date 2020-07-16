@@ -1,4 +1,4 @@
-const localhost = true;
+const localhost = false;
 
 const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;

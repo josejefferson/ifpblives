@@ -48,7 +48,6 @@ function saveOnline(data, dbURL, schclass, res) {
 }
 
 function generateNotificationText(data, schclass) {
-	console.log(data.sendNotification)
 	if (data.sendNotification == "true") {
 		if (data.additions &&
 			(data.additions.livesAdd && data.additions.livesAdd.length) ||

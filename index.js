@@ -1,5 +1,5 @@
 console.clear()
-global.localhost = true
+global.localhost = false
 
 const express = require('express')
 const app = express()
