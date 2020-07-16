@@ -1,6 +1,5 @@
 const express = require('express')
 const routes = express.Router()
-const functions = require('./functions')
 const actions = require('./actions')
 const path = require('path')
 

@@ -173,7 +173,7 @@ function list(disc, subject, date, link, attachments, id) {
 				${subject.replace(/\n/g, '<br>') || '-'}
 			</td>
 			<td>
-				${formatDate(date) || '-'}
+				${moment(date).format('DD/MM/YYYY') || '-'}
 			</td>
 			<td>
 				<a href="${link || '#'}" target="_blank" class="btn btn-sm btn-secondary">ABRIR</button>

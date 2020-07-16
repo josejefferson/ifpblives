@@ -1,12 +1,12 @@
 const path = require('path')
 const fs = require('fs')
 const fetch = require('node-fetch')
+const moment = require('moment')
 const md5 = require('md5')
 const OneSignal = require('onesignal-node')
 const client = new OneSignal.Client('18b1561d-b987-451d-8838-ec933c470647',
 	'YWQ3ZTM0YTYtYTI0Ni00NmMwLWE3OTUtMTA0ZjJmODU2NzYx')
 const admins = require('./admins')
-const functions = require('./functions')
 
 function authenticate(req, res) {
 	const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
@@ -27,7 +27,7 @@ function save(data, schclass, res) {
 		console.log(`Arquivo principal ${schclass} salvo!`)
 
 		// Arquivo de backup
-		fs.writeFile(`public/data/backups/bkp-${schclass}-${functions.fDate()}.json`, data, err => {
+		fs.writeFile(`public/data/backups/bkp-${schclass}-${moment().format('YYYY-MM-DD_hh-mm-ssA')}.json`, data, err => {
 			if (err) { console.log(err); res.send(['Ocorreu um erro desconhecido ao salvar o arquivo de backup']) }
 			console.log(`Arquivo de backup ${schclass} salvo!`)
 			res.send([])
@@ -60,7 +60,7 @@ function generateNotificationText(data, schclass) {
 			// Lives adicionadas
 			if (data.additions.livesAdd && data.additions.livesAdd.length) {
 				data.additions.livesAdd.forEach(l => {
-					notificationText += `🔴 ${l.disc} (${functions.fDateFromInput(l.date)})\n`
+					notificationText += `🔴 ${l.disc} (${moment(l.date).format('DD/MM/YYYY')})\n`
 				})
 				notificationText += '\n'
 			}
@@ -68,7 +68,7 @@ function generateNotificationText(data, schclass) {
 			// Anexos adicionados
 			if (data.additions.attachAdd && data.additions.attachAdd.length) {
 				data.additions.attachAdd.forEach(a => {
-					notificationText += `📎 ${a.name} (${a.disc} - ${functions.fDateFromInput(a.date)})\n`
+					notificationText += `📎 ${a.name} (${a.disc} - ${moment(a.date).format('DD/MM/YYYY')})\n`
 				})
 				notificationText += '\n'
 			}

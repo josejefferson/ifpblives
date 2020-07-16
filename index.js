@@ -5,8 +5,8 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
+const moment = require('moment')
 const routes = require('./modules/routes')
-const { dateH } = require('./modules/functions')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -17,5 +17,5 @@ app.use((req, res) => {
 })
 
 app.listen(3000, () => {
-	console.log(`>> [${dateH()}] Aberto na porta 3000`)
+	console.log(`>> [${moment().subtract({hours: 3}).format('DD/MM/YYYY hh:mm:ssA')}] Aberto na porta 3000`)
 })

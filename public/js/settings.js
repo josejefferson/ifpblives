@@ -201,7 +201,7 @@ $('#importfile').change(async function () {
 $('#export').click(() => {
 	$('#exportlink').attr({
 		href: `data:text/plain,${encodeURIComponent(JSON.stringify(toArray()))}`,
-		download: `ifpblives-${schclass}-${fDate()}.json`
+		download: `ifpblives ${schclass} ${moment().format('YYYY-MM-DD hh-mm-ssA')}.json`
 	}).removeClass('hidden');
 });
 
@@ -226,19 +226,6 @@ function getAdditions() {
 	});
 
 	return { livesAdd, attachAdd }
-}
-
-// Formata a data
-function formatDate(date) {
-	const dt = new Date(date);
-	let month = (dt.getMonth() + 1).toString();
-	let day = dt.getDate().toString();
-	let year = dt.getFullYear().toString();
-
-	if (month.length < 2) month = `0${month}`;
-	if (day.length < 2) day = `0${day}`;
-
-	return [year, month, day].join('-');
 }
 
 // Separa as partes que formam a data
@@ -335,7 +322,7 @@ function list(disc, subject, date, link, attachments, id, newItem = false) {
 				<textarea class="form-control subject" placeholder="Assunto...">${subject || ''}</textarea>
 			</td>
 			<td>
-				<input type="date" class="form-control date" value="${date || formatDate(Date.now())}">
+				<input type="date" class="form-control date" value="${date || moment().format('YYYY-MM-DD')}">
 			</td>
 			<td>
 				<input type="url" class="form-control link" placeholder="Link..." value="${link || ''}">
