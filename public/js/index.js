@@ -161,9 +161,9 @@ function list(disc, subject, date, link, attachments, id) {
 				</label>
 			</td>
 			<td>
-				<a href="${link || '#'}" target="_blank" class="text-dark">${disc || '-'}</a>${
-					(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
-					'<sup class="mdi mdi-circle-medium text-danger"></sup>' : ''}
+				${(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
+					'<span class="mdi mdi-circle-medium text-danger"></span>' : ''}
+				<a href="${link || '#'}" target="_blank" class="text-dark">${disc || '-'}</a>
 			</td>
 			<td>
 				${subject.replace(/\n/g, '<br>') || '-'}
