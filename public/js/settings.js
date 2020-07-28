@@ -1,5 +1,13 @@
 const localhost = false;
 
+// Habilitar console para dispositivos móveis
+if (new URLSearchParams(window.location.search).get('debug') !== null) {
+	let script = document.createElement('script')
+	script.src = 'https://cdn.jsdelivr.net/npm/eruda'
+	script.onload = () => eruda.init()
+	document.getElementsByTagName('head')[0].appendChild(script)
+}
+
 const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;
 

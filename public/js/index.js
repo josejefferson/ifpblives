@@ -1,5 +1,13 @@
 const localhost = false;
 
+// Habilitar console para dispositivos móveis
+if (new URLSearchParams(window.location.search).get('debug') !== null) {
+	let script = document.createElement('script')
+	script.src = 'https://cdn.jsdelivr.net/npm/eruda'
+	script.onload = () => eruda.init()
+	document.getElementsByTagName('head')[0].appendChild(script)
+}
+
 const schclass = new URLSearchParams(window.location.search).get('class') == '3e4' ? '3e4' : '1e2';
 let dbURL;
 
@@ -162,7 +170,7 @@ function list(disc, subject, date, link, attachments, id) {
 			</td>
 			<td>
 				${(localStorage.getItem('viewed') && !JSON.parse(localStorage.getItem('viewed') || '[]').includes(id)) ?
-					'<span class="mdi mdi-circle-medium text-danger"></span>' : ''}
+			'<span class="mdi mdi-circle-medium text-danger"></span>' : ''}
 				<a href="${link || '#'}" target="_blank" class="text-dark">${disc || '-'}</a>
 			</td>
 			<td>
