@@ -16,6 +16,6 @@ app.use((req, res) => {
 	res.status(404).sendFile(path.join(__dirname, 'pages/404.html'))
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
 	console.log(`>> [${moment().subtract({hours: 3}).format('DD/MM/YYYY hh:mm:ssA')}] Aberto na porta 3000`)
 })
