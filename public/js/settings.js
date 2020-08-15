@@ -1,4 +1,4 @@
-const localhost = false;
+const localhost = true;
 
 // Habilitar console para dispositivos móveis
 if (new URLSearchParams(window.location.search).get('debug') !== null) {
