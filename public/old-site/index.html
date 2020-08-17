@@ -6,9 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aguarde um momento - Lives do IFPB</title>
 	<link rel="shortcut icon" href="/favicon.png" type="image/png">
-	<link rel="stylesheet" href="/css/bootstrap.css">
-	<link rel="stylesheet" href="/css/materialdesignicons.css">
-	<link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/materialdesignicons.css">
+	<link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
@@ -23,11 +23,16 @@
 	<div class="container my-4">
 		<main>
 			<h2>Aguarde um momento...</h2>
-			<i>Estamos redirecionado você para o novo site. Caso não seja redirecionado <a href="/">clique aqui</a></i>
+			<i>Estamos redirecionado você para o novo site. Caso não seja redirecionado <a href="https://ifpblives.herokuapp.com/">clique aqui</a></i>
+
+			<form name="migration" action="https://ifpblives.herokuapp.com/migrate" method="post">
+				<input type="hidden" name="schclass" id="migschclass" value="1e2">
+				<input type="hidden" name="migdata" id="migdata" value="">
+			</form>
 		</main>
 	</div>
 
-	<script src="/js/migrate.js"></script>
+	<script src="js/index.js"></script>
 </body>
 
 </html>

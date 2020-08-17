@@ -3,6 +3,48 @@ const routes = express.Router()
 const actions = require('./actions')
 const path = require('path')
 
+routes.post('/migrate', (req, res) => {
+	res.send(`
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Aguarde um momento - Lives do IFPB</title>
+	<link rel="shortcut icon" href="/favicon.png" type="image/png">
+	<link rel="stylesheet" href="/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/materialdesignicons.css">
+	<link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+	<a href="/" class="text-decoration-none">
+		<header class="bg-success text-white py-4">
+			<div class="container">
+				<h1 class="d-flex align-items-baseline"><img src="/icons/svg.svg" class="mr-3 iflogo"> Lives do IFPB</h1>
+			</div>
+		</header>
+	</a>
+
+	<div class="container my-4">
+		<main>
+			<h2>Aguarde um momento...</h2>
+			<i>Estamos redirecionado você para o novo site. Caso não seja redirecionado <a href="/">clique aqui</a></i>
+		</main>
+	</div>
+
+	<script>
+		const schclass = ${req.body.schclass || '1e2'}
+		const b64MigData = ${req.body.migdata || ''}
+	</script>
+	<script src="/js/migrate.js"></script>
+</body>
+
+</html>
+	`)
+})
+
 routes.get('/settings', (req, res) => {
 	actions.authenticate(req, res) && res.sendFile(path.join(__dirname, '../pages/settings.html'))
 })

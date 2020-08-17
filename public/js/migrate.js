@@ -1,7 +1,6 @@
 try {
 
-	if (localStorage.getItem('migrate') != 'true') {
-		const b64MigData = new URLSearchParams(window.location.search).get('migrationData')
+	if (localStorage.getItem('migrate') != 'true' && migData) {
 		const jsonMigData = atob(b64MigData)
 		const migData = JSON.parse(jsonMigData)
 
