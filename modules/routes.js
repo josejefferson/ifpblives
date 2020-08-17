@@ -35,8 +35,8 @@ routes.post('/migrate', (req, res) => {
 	</div>
 
 	<script>
-		const schclass = ${req.body.schclass || '1e2'}
-		const b64MigData = ${req.body.migdata || ''}
+		const schclass = '${req.body.schclass || '1e2'}'
+		const b64MigData = '${req.body.migdata || ''}'
 	</script>
 	<script src="/js/migrate.js"></script>
 </body>
