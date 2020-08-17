@@ -1,6 +1,6 @@
 try {
 
-	if (localStorage.getItem('migrate') != 'true' && migData) {
+	if (localStorage.getItem('migrate') != 'true' && b64MigData) {
 		const jsonMigData = atob(b64MigData)
 		const migData = JSON.parse(jsonMigData)
 
