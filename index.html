@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lives do IFPB</title>
+	<meta name="robots" content="noindex">
+	<link rel="shortcut icon" href="favicon.png" type="image/png">
+	<link rel="manifest" href="/manifest.json">
+	<link rel="stylesheet" href="/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/materialdesignicons.css">
+	<link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+	<header class="bg-success text-white py-4">
+		<div class="container">
+			<h1 class="d-flex align-items-baseline"><img src="/icons/svg.svg" class="mr-3 iflogo" id="openeditor"> Lives
+				do IFPB</h1>
+			<i class="d-block">
+				<span class="class">-º e -ºs anos</span>
+				<a href="#" class="mdi mdi-swap-horizontal text-white switchclasslink"></a>
+			</i>
+		</div>
+	</header>
+
+	<div class="container my-4">
+		<main>
+			<button class="btn" data-toggle="collapse" data-target="#filters"><i class="mdi mdi-filter"></i> Filtrar por
+				disciplina</button>
+
+			<div class="collapse my-2" id="filters">
+				<select id="disc-filter" class="form-control form-inline" multiple></select>
+				<button class="btn btn-danger mt-2" id="remove-filters">Remover filtros</button>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12 col-lg-8">
+					<div class="overflow-auto mb-3">
+						<table class="table table-sm table-striped table-hover border d-table mb-0 liveclasses">
+							<thead class="thead-light">
+								<tr>
+									<th id="watccol"></th>
+									<th id="disccol">Disciplina</th>
+									<th id="subjcol">
+										<div>Assunto</div>
+									</th>
+									<th id="datecol">Data</th>
+									<th id="linkcol">Link</th>
+									<th id="attacol">Anexos</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="6" class="loadstatus">Carregando...</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="col-sm-12 col-lg-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title">
+								<h3><i class="mdi mdi-calendar text-primary"></i> Horários:</h3>
+							</div>
+							<div class="card-text">
+								<div class="overflow-auto text-nowrap">
+
+									<!-- Horários dos 1ºs e 2ºs anos -->
+									<table class="table table-sm border d-table mb-0 hor1e2">
+										<thead class="thead-light">
+											<tr>
+												<th></th>
+												<th>Segunda</th>
+												<th>Terça</th>
+												<th>Quarta</th>
+												<th>Quinta</th>
+												<th>Sexta</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>8:00 - 9:00</th>
+												<td>Geografia</td>
+												<td>Física</td>
+												<td>Ed. Física/Artes</td>
+												<td>Química</td>
+												<td>Sociologia/Filosofia</td>
+											</tr>
+											<tr>
+												<th>9:15 - 10:15</th>
+												<td>Matemática</td>
+												<td>Português</td>
+												<td>Biologia</td>
+												<td>História</td>
+												<td>Inglês/Espanhol</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<!-- Horários dos 3ºs e 4ºs anos -->
+									<table class="table table-sm border d-table mb-0 hor3e4">
+										<thead class="thead-light">
+											<tr>
+												<th></th>
+												<th>Segunda</th>
+												<th>Terça</th>
+												<th>Quarta</th>
+												<th>Quinta</th>
+												<th>Sexta</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>8:00 - 9:00</th>
+												<td>Matemática</td>
+												<td>Português</td>
+												<td>Biologia</td>
+												<td>História</td>
+												<td>Inglês/Espanhol</td>
+											</tr>
+											<tr>
+												<th>9:15 - 10:15</th>
+												<td>Geografia</td>
+												<td>Física</td>
+												<td>Ed. Física/Artes</td>
+												<td>Química</td>
+												<td>Sociologia/Filosofia</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card mt-3">
+						<div class="card-body">
+							<div class="card-title">
+								<h3><i class="mdi mdi-information text-primary"></i> Algumas observações:</h3>
+							</div>
+							<div class="card-text">
+								<ul>
+									<li>Para agilizar o acesso a “sala de aula virtual”, os alunos devem acessar o link usando o
+										e-mail institucional
+										<mark>@academico.ifpb.edu.br</mark>, caso contrário, é necessário liberar cada acesso
+										individualmente;</li>
+									<li>As aulas serão gravadas e posteriormente compartilhadas;</li>
+									<li>Os alunos devem desabilitar microfone e câmera;</li>
+									<li>Quando surgir algum questionamento, informar no Chat para o professor, no momento
+										oportuno, liberar o microfone do
+										aluno;</li>
+									<li>A participação em tempo real dos alunos é extremamente importante para tirar dúvidas e
+										promover debates sobre o tema.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="collapse" id="notifications-container">
+						<div class="card mt-3">
+							<div class="card-body">
+								<div class="card-title">
+									<h3><i class="mdi mdi-bell text-primary"></i> Notificações:</h3>
+								</div>
+								<div class="card-text">
+									<p>Seja notificado toda vez que adicionarmos algo</p>
+									<button class="btn btn-primary" id="notifications">Ative as notificações</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<footer class="text-secondary bg-light text-center small py-3">
+		<div class="container">
+			<a href="#" class="text-dark switchclass">Acessar -º e -ºs anos</a>
+			<div>Desenvolvido por Jefferson Dantas</div>
+		</div>
+	</footer>
+
+	<script src="/js/jquery.js"></script>
+	<script src="/js/bootstrap.js"></script>
+	<script src="/js/moment.js"></script>
+	<script src="/js/index.js"></script>
+	<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+	<script src="/js/onesignal.js"></script>
+
+	<img src="https://a4l1e3rt7a4s5.herokuapp.com/ifpblives">
+</body>
+
+</html>

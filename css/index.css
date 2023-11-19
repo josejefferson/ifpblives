@@ -1,0 +1,41 @@
+.iflogo {
+	height: 29px;
+}
+
+.table-sm th {
+	padding: 10px;
+}
+
+.table-sm td {
+	padding: .3rem 10px;
+}
+
+th, td {
+	vertical-align: middle !important;
+}
+
+table tr td label {
+	margin-bottom: 0 !important
+}
+
+#watccol, #disccol, #datecol {
+	cursor: pointer;
+}
+
+.liveclasses #subjcol div {
+	width: 250px;
+}
+
+.liveclasses td:nth-child(6) {
+	white-space: nowrap;
+}
+
+.sort::after {
+	content: ' \F0360';
+	font-family: 'Material Design Icons';
+}
+
+.sortrev::after {
+	content: ' \F035D';
+	font-family: 'Material Design Icons';
+}

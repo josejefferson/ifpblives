@@ -1,0 +1,42 @@
+.liveclasses {
+	white-space: nowrap;
+	text-align: center;
+}
+
+.table-sm th {
+	padding: 10px;
+}
+
+.table-sm td {
+	padding: .3rem 10px;
+}
+
+th, td {
+	vertical-align: middle !important;
+}
+
+.disc, .subject, .date, .link {
+	width: 200px;
+}
+
+.attachname {
+	width: 100px;
+}
+
+.attachurl {
+	width: 200px;
+}
+
+.subject {
+	height: calc(1.5em + .75rem + 2px) !important;
+	resize: none;
+}
+
+.custom-file-label::after {
+	content: "\F0770";
+	font-family: "Material Design Icons";
+}
+
+.hidden {
+	display: none !important;
+}

@@ -1,0 +1,16 @@
+{
+	"name": "Lives do IFPB",
+	"short_name": "Lives do IFPB",
+	"description": "Lista com todas as lives do IFPB durante a quarentena",
+	"icons": [
+		{
+			"src": "icons/256.png",
+			"type": "image/png",
+			"sizes": "256x256"
+		}
+	],
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff"
+}
