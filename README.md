@@ -30,3 +30,9 @@ npm start
 ```
 
 ## Screenshots
+### Página inicial
+![Página inicial](https://github.com/josejefferson/ifpblives/assets/52979246/1bca77fe-b550-40d5-b581-572c2c5b983d)
+
+### Administração
+![Administração 1](https://github.com/josejefferson/ifpblives/assets/52979246/be06875e-07b7-4aa9-bd4f-35afe27d7655)
+![Administração 2](https://github.com/josejefferson/ifpblives/assets/52979246/827d0682-5947-4344-b8f2-272bfa034766)
